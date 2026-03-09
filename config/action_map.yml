@@ -1,0 +1,23 @@
+# each action should have a units and increment key
+# the units key should be one of the following: mile, floor, minute, quantity
+# "increment" is the number of units of a given action equal to 1 micromort ; so an increment of 2.5 means that 2.5 miles equals 1 micromort
+# the increment should be a float
+
+"walked on sidewalk":
+  units: mile
+  increment: 2.5
+"rode a shark":
+  units: minute
+  increment: .05
+"road trip":
+  units: mile
+  increment: 1.2
+"ate a hotdog":
+  units: quantity
+  increment: 1
+"got a haircut":
+  units: quantity
+  increment: 1
+"snorkeled with a hamburger in my pocket":
+  units: minute
+  increment: .1

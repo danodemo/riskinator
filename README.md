@@ -1,8 +1,11 @@
-# Riskinator©, brought to you by Baby Sloth Softworks LLC
-A simple API to help you mitigate risk
+# Riskinator©
+### Brought to you by Baby Sloth Softworks LLC
+#### Written by Dan Nicodemo
+
+A simple API to help you mitigate risk of death for commuters
 
 # HOW MAKE GO?!
-## Install Rails 8 and All The Things™
+### Install Rails 8 and All The Things™
 _NOTE: This assumes setup using homebrew_
 
 1.) Install ruby dependencies: `brew install openssl@3 LibYaml gmp rust`
@@ -13,41 +16,46 @@ _NOTE: This assumes setup using homebrew_
 
 4.) install rails: `gem install rails`
 
-- Ensure it actually runs when you type `rails s`
-- If it doesn't run, fix it
-- Once it's running, hit it with a POST request like it says below
-- Marvel at the wonders of Ruby on Rails
+5.) Ensure it actually runs when you type `rails s`
+
+6.) If it doesn't run, fix it
+
+7.) Once it's running, hit it with a POST request like it says below
+
+8.) Marvel at the wonders of *Ruby on Rails*
 
 # HOW DO RISK ASSESSMENT?!
-- You can send a json blob via POST request to `/riskit` that looks like this:
+- You can send a json blob via POST request to `/riskit` from the terminal as follows:
 
 ```
-{
-  "commuterId": "COM-123",
-  "actions": [
-    {
-      "timestamp": "2022-01-01 10:05:11",
-      "action": "walked on sidewalk",
-      "unit": "mile",
-      "quantity": 0.4
-    },
-    {
-      "timestamp": "2022-01-01 10:30:09",
-      "action": "rode a shark",
-      "unit": "minute",
-      "quantity": 3
-    }
-  ]
-}
+curl -X POST http://localhost:3000/riskit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "commuterId": "COM-123",
+    "actions": [
+      {
+        "timestamp": "2022-01-01 10:05:11",
+        "action": "walked on sidewalk",
+        "unit": "mile",
+        "quantity": 2.5
+      },
+      {
+        "timestamp": "2022-01-01 10:30:09",
+        "action": "rode a shark",
+        "unit": "minute",
+        "quantity": 3
+      }
+    ]
+  }'
 ```
 ## HOW PARAM?!
 - Each riskinator request hash should have the following keys:
 `"commuterId"` - a unique string identifier for the commuter in question
-`"actions"` - an array of `action_items` hashes
-** IMPORTANT: each riskinator request hash should include `actions` only for the same given day - different days should be handled in different requests **
+`"actions"` - an array of `action_items` (hashes)
+**IMPORTANT: each riskinator request hash should include `actions` only for the same given day - different days should be handled in different requests**
 
 - Each `action_item` hash should have the following:
-`"timestamp"` - standard DateTime object
+`"timestamp"` - standard DateTime object string
 `"action"` - A string with the action to be assessed
 `"unit"` - one of the following values in string form: mile, floor, minute, quantity
 `"quantity"` - the numeric value of corresponding "units"
@@ -61,15 +69,108 @@ _NOTE: This assumes setup using homebrew_
 ```
 ...or it might be an error.  If it's an error, just ask Claude to fix it.
 
+# HOW CALCULATE RISK?!?!
 - Risk value is measured in [Micromorts](https://en.wikipedia.org/wiki/Micromort)
+- There is an `action_map.yml` in the config that lists the currently supported activities, their associated Units of measurement, and the *increment* of said units that equates to 1 _micromort_ 
+- This ultimately leads to the following calculation:
+`risk_value = ActionItem["quantity"] / ActionMap["increment"]`
 
-## Rules
-- each action should have a “timestamp”, “action”, “unit”, and “quantity”
-- the timestamps should all be on the same day
-- the “action” can be any string
-- units should be one of the following: “mile”, “floor”, “minute”, or “quantity”
+An exmaple entry from the YAML
+```
+"walked on sidewalk":
+    units: mile
+    increment: 1
+```
+For this example, every mile you "walked on sidewalk" would equal one micromort.
 
-## Deliverable:
-- a runnable prototype that accepts POST requests
-- handles input validation
-- at least one automated test that you consider valuable
+- Support new action items by simply adding new entries to the YAML, but keep in mind the entries should be downcased and indented properly
+- NOTE: You may need to restart the rails server for the YAML changes to take effect
+
+### Test Requests
+
+You can use the following requests to test the API once it is up and running locally on your machine:
+```
+# example valid request
+curl -X POST http://localhost:3000/riskit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "commuterId": "COM-123",
+    "actions": [
+      {
+        "timestamp": "2022-01-01 10:05:11",
+        "action": "walked on sidewalk",
+        "unit": "mile",
+        "quantity": 2.5
+      },
+      {
+        "timestamp": "2022-01-01 10:30:09",
+        "action": "rode a shark",
+        "unit": "minute",
+        "quantity": 3
+      }
+    ]
+  }'
+
+# example malformed request: failure due to multiple days in action item timestamps (v1)
+curl -X POST http://localhost:3000/riskit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "commuterId": "COM-123",
+    "actions": [
+      {
+        "timestamp": "2022-01-02 10:05:11",
+        "action": "walked on sidewalk",
+        "unit": "mile",
+        "quantity": 2.5
+      },
+      {
+        "timestamp": "2022-01-01 10:30:09",
+        "action": "rode a shark",
+        "unit": "minute",
+        "quantity": 3
+      }
+    ]
+  }'
+
+# example malformed request: actions not present in action_map.yml
+curl -X POST http://localhost:3000/riskit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "commuterId": "COM-123",
+    "actions": [
+      {
+        "timestamp": "2022-01-02 10:05:11",
+        "action": "walked on the beach",
+        "unit": "mile",
+        "quantity": 2.5
+      },
+      {
+        "timestamp": "2022-01-01 10:30:09",
+        "action": "rode a shark",
+        "unit": "minute",
+        "quantity": 3
+      }
+    ]
+  }'
+
+# example malformed request: units do not match action_map.yml
+curl -X POST http://localhost:3000/riskit \
+  -H "Content-Type: application/json" \
+  -d '{
+    "commuterId": "COM-123",
+    "actions": [
+      {
+        "timestamp": "2022-01-02 10:05:11",
+        "action": "walked on sidewalk",
+        "unit": "snorkels",
+        "quantity": 2.5
+      },
+      {
+        "timestamp": "2022-01-01 10:30:09",
+        "action": "rode a shark",
+        "unit": "floor",
+        "quantity": 3
+      }
+    ]
+  }'
+  ```

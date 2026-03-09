@@ -84,7 +84,8 @@ An exmaple entry from the YAML
 For this example, every mile you "walked on sidewalk" would equal one micromort.
 
 - Support new action items by simply adding new entries to the YAML, but keep in mind the entries should be downcased and indented properly
-- NOTE: You may need to restart the rails server for the YAML changes to take effect
+**NOTE: You may need to restart the rails server for the YAML changes to take effect**
+- If your request includes some action items that are valid, and some that are not, it will still return the risk value of the valid items --> it will raise a warning in the Rails logger alerting you to the actions that weren't found for later debugging
 
 ### Test Requests
 
@@ -132,15 +133,15 @@ curl -X POST http://localhost:3000/riskit \
     ]
   }'
 
-# example malformed request: actions not present in action_map.yml
+# example malformed request: actions not present in action_map.yml (will still return a risk value as long as some are valid)
 curl -X POST http://localhost:3000/riskit \
   -H "Content-Type: application/json" \
   -d '{
     "commuterId": "COM-123",
     "actions": [
       {
-        "timestamp": "2022-01-02 10:05:11",
-        "action": "walked on the beach",
+        "timestamp": "2022-01-01 10:05:11",
+        "action": "walked on a porcupine",
         "unit": "mile",
         "quantity": 2.5
       },
@@ -148,27 +149,6 @@ curl -X POST http://localhost:3000/riskit \
         "timestamp": "2022-01-01 10:30:09",
         "action": "rode a shark",
         "unit": "minute",
-        "quantity": 3
-      }
-    ]
-  }'
-
-# example malformed request: units do not match action_map.yml
-curl -X POST http://localhost:3000/riskit \
-  -H "Content-Type: application/json" \
-  -d '{
-    "commuterId": "COM-123",
-    "actions": [
-      {
-        "timestamp": "2022-01-02 10:05:11",
-        "action": "walked on sidewalk",
-        "unit": "snorkels",
-        "quantity": 2.5
-      },
-      {
-        "timestamp": "2022-01-01 10:30:09",
-        "action": "rode a shark",
-        "unit": "floor",
         "quantity": 3
       }
     ]

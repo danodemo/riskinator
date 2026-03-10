@@ -1,24 +1,28 @@
-# Riskinator©
+# RiskinatorAPI©
 ### Brought to you by Baby Sloth Softworks LLC
-#### Written by Dan Nicodemo
+#### Written by Dan Nicodemo, not AI
 
 A simple API to help you mitigate risk of death for commuters
 
 # HOW MAKE GO?!
+Unzip the repo into a folder of your choice, then navigate to the app in your terminal.
+
+You should follow the steps below to make sure Rails will work:
+
 ### Install Rails 8 and All The Things™
-_NOTE: This assumes setup using homebrew_
+_NOTE: This setup assumes using homebrew_
 
 1.) Install ruby dependencies: `brew install openssl@3 LibYaml gmp rust`
 
 2.) Install `rvm`, `rbenv`, or something like `mise` Ruby version manager: `brew install mise`
 
-3.) install ruby 3.4.2: `mise install ruby@3.4.2`
+3.) install ruby 3.4.2: `mise install ruby@3.4.2` then use it `mise use ruby`
 
 4.) install rails: `gem install rails`
 
-5.) Ensure it actually runs when you type `rails s`
+5.) `bundle install` to be sure all dependencies are installed 
 
-6.) If it doesn't run, fix it
+6.) If bundle completes successfully you can run `rails s`
 
 7.) Once it's running, hit it with a POST request like it says below
 
@@ -48,6 +52,7 @@ curl -X POST http://localhost:3000/riskit \
     ]
   }'
 ```
+
 ## HOW PARAM?!
 - Each riskinator request hash should have the following keys:
 `"commuterId"` - a unique string identifier for the commuter in question
@@ -157,3 +162,4 @@ curl -X POST http://localhost:3000/riskit \
     ]
   }'
   ```
+  

@@ -24,14 +24,16 @@ RSpec.describe "POST /riskit", type: :request do
   end
 
   describe "valid request" do
-    it "returns 200 and processes the payload" do
+    it "returns 200 and processes the payload with risk and action counts" do
       post "/riskit", params: valid_payload, as: :json
 
       expect(response).to have_http_status(:ok)
       json = response.parsed_body
       expect(json["status"]).to eq("ok")
       expect(json["data"]["commuterId"]).to eq("COM-123")
-      expect(json["data"]["actions"].size).to eq(2)
+      expect(json["data"]["risk"]).to eq(60.16)
+      expect(json["data"]["valid_actions"]).to eq(2)
+      expect(json["data"]["invalid_actions"]).to eq(0)
     end
   end
 

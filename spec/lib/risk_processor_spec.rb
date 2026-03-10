@@ -18,7 +18,12 @@ RSpec.describe RiskProcessor::Processor do
 
       result = described_class.process_risk(validated_hash)
 
-      expect(result).to eq("commuterId" => "COM-456", "risk" => 0.16)
+      expect(result).to eq(
+        "commuterId" => "COM-456",
+        "risk" => 0.16,
+        "valid_actions" => 1,
+        "invalid_actions" => 2
+      )
     end
 
     it "skips actions with matching name but wrong unit and still returns risk from valid items" do
@@ -34,7 +39,12 @@ RSpec.describe RiskProcessor::Processor do
 
       result = described_class.process_risk(validated_hash)
 
-      expect(result).to eq("commuterId" => "COM-111", "risk" => 1.0)
+      expect(result).to eq(
+        "commuterId" => "COM-111",
+        "risk" => 1.0,
+        "valid_actions" => 1,
+        "invalid_actions" => 1
+      )
     end
 
     it "returns sum of risk for multiple valid actions" do
@@ -51,6 +61,8 @@ RSpec.describe RiskProcessor::Processor do
 
       expect(result["commuterId"]).to eq("COM-SUM")
       expect(result["risk"]).to eq(60.16)
+      expect(result["valid_actions"]).to eq(2)
+      expect(result["invalid_actions"]).to eq(0)
     end
   end
 end

@@ -60,14 +60,17 @@ curl -X POST http://localhost:3000/riskit \
 `"unit"` - one of the following values in string form: mile, floor, minute, quantity
 `"quantity"` - the numeric value of corresponding "units"
 
-- The output will look sorta like this:
+- The results will look sorta like this:
 ```
 {
   "commuterId": "COM-123",
-  "risk": 5500
+  "risk": 5500,
+  "valid_actions": 2,
+  "invalid_actions": 0
 }
 ```
-...or it might be an error.  If it's an error, just ask Claude to fix it.
+...or it might be an error.
+**NOTE: "invalid" actions refer to actions that don't match anything in the action_map or have mismatched units**
 
 # HOW CALCULATE RISK?!?!
 - Risk value is measured in [Micromorts](https://en.wikipedia.org/wiki/Micromort)

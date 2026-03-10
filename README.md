@@ -1,15 +1,14 @@
 # RiskinatorAPI©
-### Brought to you by Baby Sloth Softworks LLC
 #### Written by Dan Nicodemo, not AI
 
 A simple API to help you mitigate risk of death for commuters
----
-# HOW MAKE GO?!
+
+## HOW MAKE GO?!
 Unzip the repo into a folder of your choice, then navigate to the app in your terminal.
 
 You should follow the steps below to make sure Rails will work:
 
-## With Docker
+### With Docker
 If you have Docker installed, you can run the API without installing Ruby or any dependencies:
 
 **One-time build:**
@@ -34,7 +33,7 @@ curl -X POST http://localhost:3000/riskit \
   -d '{"commuterId":"COM-123","actions":[{"timestamp":"2022-01-01 10:05:11","action":"walked on sidewalk","unit":"mile","quantity":0.4},{"timestamp":"2022-01-01 10:30:09","action":"rode a shark","unit":"minute","quantity":3}]}'
 ```
 
-## No Docker? Install Rails 8 and All The Things™
+### No Docker? Install Rails 8 and All The Things™
 _NOTE: This setup assumes using homebrew_
 
 1.) Install ruby dependencies: `brew install openssl@3 LibYaml gmp rust`
@@ -55,7 +54,7 @@ _NOTE: This setup assumes using homebrew_
 
 ---
 
-# HOW DO RISK ASSESSMENT?!
+## HOW DO RISK ASSESSMENT?!
 - You can send a json blob via POST request to `/riskit` from the terminal as follows:
 
 ```
@@ -104,7 +103,7 @@ curl -X POST http://localhost:3000/riskit \
 ...or it might be an error.
 **NOTE: "invalid" actions refer to actions that don't match anything in the action_map or have mismatched units**
 
-# HOW CALCULATE RISK?!?!
+## HOW CALCULATE RISK?!?!
 - Risk value is measured in [Micromorts](https://en.wikipedia.org/wiki/Micromort)
 - There is an `action_map.yml` in the config that lists the currently supported activities, their associated Units of measurement, and the *increment* of said units that equates to 1 _micromort_ 
 - This ultimately leads to the following calculation:

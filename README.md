@@ -3,13 +3,38 @@
 #### Written by Dan Nicodemo, not AI
 
 A simple API to help you mitigate risk of death for commuters
-
+---
 # HOW MAKE GO?!
 Unzip the repo into a folder of your choice, then navigate to the app in your terminal.
 
 You should follow the steps below to make sure Rails will work:
 
-### Install Rails 8 and All The Things™
+## With Docker
+If you have Docker installed, you can run the API without installing Ruby or any dependencies:
+
+**One-time build:**
+
+```bash
+docker build -t riskinator .
+```
+
+**Single line to run:**
+
+```bash
+docker run -p 3000:80 riskinator
+```
+
+Or to use port 80 on your host: `docker run -p 80:80 riskinator`. Alternatively, run `docker compose up --build` to build and start in one step (with port 3000 published).
+
+The API is then available at **http://localhost:3000/riskit** (or **http://localhost/riskit** if you used port 80). Example POST:
+
+```bash
+curl -X POST http://localhost:3000/riskit \
+  -H "Content-Type: application/json" \
+  -d '{"commuterId":"COM-123","actions":[{"timestamp":"2022-01-01 10:05:11","action":"walked on sidewalk","unit":"mile","quantity":0.4},{"timestamp":"2022-01-01 10:30:09","action":"rode a shark","unit":"minute","quantity":3}]}'
+```
+
+## No Docker? Install Rails 8 and All The Things™
 _NOTE: This setup assumes using homebrew_
 
 1.) Install ruby dependencies: `brew install openssl@3 LibYaml gmp rust`
@@ -27,6 +52,8 @@ _NOTE: This setup assumes using homebrew_
 7.) Once it's running, hit it with a POST request like it says below
 
 8.) Marvel at the wonders of *Ruby on Rails*
+
+---
 
 # HOW DO RISK ASSESSMENT?!
 - You can send a json blob via POST request to `/riskit` from the terminal as follows:

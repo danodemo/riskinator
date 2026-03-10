@@ -3,7 +3,7 @@
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
 # docker build -t riskinator .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name riskinator riskinator
+# docker run -d -p 3000:80 --name riskinator riskinator
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
@@ -35,8 +35,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install application gems
-COPY vendor/* ./vendor/
+# Install application gems (no pre-vendored gems required)
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle install && \

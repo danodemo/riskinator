@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+# Default SECRET_KEY_BASE so the container runs without -e RAILS_MASTER_KEY
+export SECRET_KEY_BASE="${SECRET_KEY_BASE:-0000000000000000000000000000000000000000000000000000000000000000}"
+
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare

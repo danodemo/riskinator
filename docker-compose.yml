@@ -1,0 +1,6 @@
+services:
+  web:
+    build: .
+    image: riskinator
+    ports:
+      - "3000:80"

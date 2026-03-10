@@ -21,7 +21,7 @@ module RiskProcessor
           valid_actions += 1
         end
       end
-      return { "commuterId" => validated_hash["commuterId"], "risk" => risk, "valid_actions" => valid_actions, "invalid_actions" => invalid_actions }
+      return { "commuterId" => validated_hash["commuterId"], "risk" => risk.round(2), "valid_actions" => valid_actions, "invalid_actions" => invalid_actions }
     end
   end
 end

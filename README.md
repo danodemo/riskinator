@@ -98,6 +98,7 @@ For this example, every mile you "walked on sidewalk" would equal one micromort.
 ### Test Requests
 
 You can use the following requests to test the API once it is up and running locally on your machine:
+
 ```
 # example valid request
 curl -X POST http://localhost:3000/riskit \
@@ -162,4 +163,3 @@ curl -X POST http://localhost:3000/riskit \
     ]
   }'
   ```
-  

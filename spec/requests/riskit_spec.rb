@@ -65,14 +65,14 @@ RSpec.describe "POST /riskit", type: :request do
       post "/riskit", params: payload, as: :json
 
       expect(response).to have_http_status(:unprocessable_entity)
-      expect(response.parsed_body["error"]).to eq("actions must be a non-empty array of action items")
+      expect(response.parsed_body["error"]).to eq("actions must be a non-empty array of hashes representing action items")
     end
 
     it "rejects empty actions array" do
       post "/riskit", params: valid_payload.merge("actions" => []), as: :json
 
       expect(response).to have_http_status(:unprocessable_entity)
-      expect(response.parsed_body["error"]).to eq("actions must be a non-empty array of action items")
+      expect(response.parsed_body["error"]).to eq("actions must be a non-empty array of hashes representing action items")
     end
 
     it "rejects invalid unit in action item" do

@@ -12,7 +12,7 @@ class RiskitPayloadValidator
 
   def valid?
     return fail_with("commuterId is required and must be a string") unless valid_commuter_id?
-    return fail_with("actions must be a non-empty array of action items") unless valid_actions_array?
+    return fail_with("actions must be a non-empty array of hashes representing action items") unless valid_actions_array?
     return fail_with("Configuration Error: request contains action items from different days") unless same_day_timestamps?
 
     payload["actions"].each_with_index do |item, index|

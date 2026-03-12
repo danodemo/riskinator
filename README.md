@@ -1,5 +1,4 @@
 # RiskinatorAPI©
-#### Written by Dan Nicodemo, not AI
 
 A simple API to help you mitigate risk of death for commuters
 

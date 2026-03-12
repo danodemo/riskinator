@@ -44,14 +44,15 @@ _NOTE: This setup assumes using homebrew_
 
 4.) install rails: `gem install rails`
 
-5.) `bundle install` to be sure all dependencies are installed 
+5.) Clone the repo into a project director, navigate to it, and run `bundle install` to be sure all dependencies are installed (you might not need to do this...)
 
-6.) If bundle completes successfully you can run `rails s`
+6.) If bundle completes successfully you can run `rails s` to start the server
 
 7.) Once it's running, hit it with a POST request like it says below
 
 8.) Marvel at the wonders of *Ruby on Rails*
 
+**NOTE: You MIGHT need to run `rake db:migrate` if you get an error about it not finding a schema file, or an error related to a db not existing...I moved a little too fast and forgot the order of operations here**
 ---
 
 ## HOW DO RISK ASSESSMENT?!
